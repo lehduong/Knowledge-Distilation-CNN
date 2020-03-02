@@ -282,8 +282,18 @@ class LayerwiseTrainer(KnowledgeDistillationTrainer):
         config = checkpoint['config']  # config of checkpoint
         epoch = checkpoint['epoch']  # stopped epoch
 
-        # reconstruct the network architecture
+        # load model state from checkpoint
+        # first, align the network by replacing depthwise separable for student 
         for i in range(1, epoch+1):
             self.prepare_train_epoch(i, config)
+        # load weight
         forgiving_state_restore(self.model, checkpoint['state_dict'])
-        self.logger.info("Loaded model's state dict successfully")
+        self.logger.info("Loaded model's state dict")
+
+        # load optimizer state from checkpoint only when optimizer type is not changed.
+        if checkpoint['config']['optimizer']['type'] != self.config['optimizer']['type']:
+            self.logger.warning("Warning: Optimizer type given in config file is different from that of checkpoint. "
+                                "Optimizer parameters not being resumed.")
+        else:
+            self.optimizer.load_state_dict(checkpoint['optimizer'])
+            self.logger.info("Loaded optimizer state dict")
