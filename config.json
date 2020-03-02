@@ -122,7 +122,8 @@
             "padding": 12,
             "kernel_size": 3
         },
-
+        "compress_rate": 0.2,
+        "auxiliary_num_layers": 6,
         "pruning_plan": [
             {
                 "name": "mod4.block2.convs.conv2",
