@@ -260,7 +260,7 @@ class LayerwiseTrainer(KnowledgeDistillationTrainer):
         with torch.no_grad():
             for batch_idx, (data, target) in enumerate(self.valid_data_loader):
                 data, target = data.to(self.device), target.to(self.device)
-                output, _ = self.model(data)
+                output = self.model.inference(data)
                 supervised_loss = self.criterions[0](output, target)
                 self.writer.set_step((epoch - 1) * len(self.valid_data_loader) + batch_idx, 'valid')
                 self.valid_metrics.update('supervised_loss', supervised_loss.item())

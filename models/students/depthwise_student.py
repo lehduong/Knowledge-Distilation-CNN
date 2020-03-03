@@ -7,7 +7,7 @@ from functools import reduce
 from torch import nn
 from base import BaseModel
 from beautifultable import BeautifulTable
-from pruning.PFEC import DepthwiseSeparableBlock
+from .transform_blocks import DepthwiseSeparableBlock
 
 BLOCKS_LEVEL_SPLIT_CHAR = '.'
 
@@ -159,6 +159,14 @@ class WrappedStudent(BaseModel):
             teacher_pred = self.teacher(x)
         student_pred = self.student(x)
         return student_pred, teacher_pred
+    
+    def inference(self, x):
+        # flush the output of last forward
+        self.student_hidden_outputs = []
+        self.teacher_hidden_outputs = []
+
+        student_pred = self.student(x)
+        return student_pred
 
     @staticmethod
     def __get_number_param(mod):
