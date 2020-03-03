@@ -237,7 +237,10 @@ class LayerwiseTrainer(KnowledgeDistillationTrainer):
                 self.lr_scheduler.step(self.train_metrics.avg('loss'))
             else:
                 self.lr_scheduler.step()
-
+                self.logger.debug('stepped lr')
+                for param_group in self.optimizer.param_groups:
+                    self.logger.debug(param_group['lr'])
+                    
         # anneal weight between losses
         self.weight_scheduler.step()
 
