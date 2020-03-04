@@ -101,7 +101,7 @@ class DepthwiseStudent(BaseModel):
                                                     padding=self.padding,
                                                     dilation=self.dilation,
                                                     groups=teacher_block.in_channels,
-                                                    bias=teacher_block.bias)
+                                                    bias=teacher_block.bias).cuda()
             self.student_blocks.append(replace_block)
             self._set_block(block_name, replace_block, self.student)
 

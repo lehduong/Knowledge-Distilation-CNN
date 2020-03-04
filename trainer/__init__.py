@@ -1,3 +1,1 @@
-from .kd_trainer import KnowledgeDistillationTrainer
-from .layer_compressible import LayerCompressibleTrainer
 from . layerwise_trainer import LayerwiseTrainer
