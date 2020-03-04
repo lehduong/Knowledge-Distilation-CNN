@@ -12,7 +12,7 @@ from .transform_blocks import DepthwiseSeparableBlock
 BLOCKS_LEVEL_SPLIT_CHAR = '.'
 
 
-class WrappedStudent(BaseModel):
+class DepthwiseStudent(BaseModel):
     def __init__(self, teacher_model, config):
         """
         :param teacher_model: nn.Module object - pretrained model that need to be distilled

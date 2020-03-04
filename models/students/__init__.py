@@ -1,1 +1,1 @@
-from .depthwise_student import WrappedStudent
+from .depthwise_student import DepthwiseStudent

@@ -7,7 +7,7 @@ import losses as module_loss
 import models.metric as module_metric
 import models as module_arch
 import utils.optim as module_optim
-from models.students import WrappedStudent
+from models.students import DepthwiseStudent
 from data_loader import _create_transform
 from parse_config import ConfigParser
 from trainer import LayerwiseTrainer
@@ -36,7 +36,7 @@ def main(config):
     teacher = teacher.cpu()  # saved some memory as student network will use a (deep) copy of teacher model
 
     if config['trainer']['name'] == 'LayerwiseTrainer':
-        student = WrappedStudent(teacher, config)
+        student = DepthwiseStudent(teacher, config)
     else:
         raise NotImplementedError("Supported: Layerwise Trainer")
 
