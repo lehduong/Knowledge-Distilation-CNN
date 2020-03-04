@@ -12,6 +12,7 @@ from data_loader import _create_transform
 from parse_config import ConfigParser
 from trainer import LayerwiseTrainer
 from utils import WeightScheduler
+from torchvision import transforms
 
 # fix random seeds for reproducibility
 SEED = 123
@@ -28,8 +29,8 @@ def main(config):
     train_joint_transform, train_input_transform, target_transform, val_input_transform = _create_transform(config)
     train_data_loader = config.init_obj('train_data_loader', module_data, transform=train_input_transform,
                                         transforms=train_joint_transform, target_transform=target_transform)
-    valid_data_loader = config.init_obj('val_data_loader', module_data, transform=val_input_transform,
-                                        target_transform=target_transform)
+    test_data_loader = config.init_obj('test_data_loader', module_data, transform=transforms.ToTensor(),
+                                        target_transform=target_transform, return_image_name=True)
 
     # Load pretrained teacher model
     teacher = config.restore_snapshot('teacher', module_arch)
@@ -56,7 +57,7 @@ def main(config):
     # Knowledge Distillation only
     if config['trainer']['name'] == 'LayerwiseTrainer':
         trainer = LayerwiseTrainer(student, criterions, metrics, optimizer, config, train_data_loader,
-                                   valid_data_loader, lr_scheduler, weight_scheduler)
+                                   test_data_loader, lr_scheduler, weight_scheduler)
     else:
         raise NotImplementedError("Unsupported trainer")
 
