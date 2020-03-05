@@ -1,12 +1,12 @@
 {
-    "name": "Reduce51M_DeepWV3Plus_All_layers_at_once",
+    "name": "Reduce51M_GSCNN_All_layers_at_once",
     "n_gpu": 1,
     "teacher": {
-        "type": "DeepWV3Plus",
+        "type": "GSCNN",
         "args": {
             "num_classes": 19
         },
-        "snapshot": "checkpoints/cityscapes_best.pth"
+        "snapshot": "checkpoints/gscnn.pth"
     },
     "transforms": {
         "joint_transforms": {
@@ -88,18 +88,18 @@
         }
     },
     "metrics": [],
-     "lr_scheduler": {
-        "type": "MyReduceLROnPlateau",
-        "args": {
-            "mode": "min",
-            "threshold": 0.01,
-            "factor": 0.5,
-            "patience": 0,
-            "verbose": true,
-            "min_lr": 1e-05,
-            "threshold_mode": "rel"
-        }
-    },
+    "lr_scheduler": {
+       "type": "MyReduceLROnPlateau",
+       "args": {
+           "mode": "min",
+           "threshold": 0.01,
+           "factor": 0.5,
+           "patience": 0,
+           "verbose": true,
+           "min_lr": 1e-05,
+           "threshold_mode": "rel"
+       }
+   },
     "trainer": {
         "name": "LayerwiseTrainer",
         "epochs": 1000,

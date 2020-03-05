@@ -1,5 +1,5 @@
 {
-    "name": "KnowledgeDistillation",
+    "name": "Reduce51M_DeepWV3Plus_All_layers_at_once",
     "n_gpu": 1,
     "teacher": {
         "type": "DeepWV3Plus",
@@ -64,7 +64,7 @@
     "optimizer": {
         "type": "RAdam",
         "args": {
-            "lr": 0.01
+            "lr": 0.005
         }
     },
     "supervised_loss": {
@@ -89,10 +89,15 @@
     },
     "metrics": [],
     "lr_scheduler": {
-        "type": "StepLR",
+        "type": "MyReduceLROnPlateau",
         "args": {
-            "step_size": 1,
-            "gamma": 0.75
+            "mode": "min",
+            "threshold": 0.01,
+            "factor": 0.5,
+            "patience": 0,
+            "verbose": true,
+            "min_lr": 1e-05,
+            "threshold_mode": "rel"
         }
     },
     "trainer": {
