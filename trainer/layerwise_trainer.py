@@ -316,7 +316,13 @@ class LayerwiseTrainer(BaseTrainer):
         return result
 
     def _test_epoch(self, epoch):
-        self.model.eval()
+        # cleaning up memory
+        self._clean_cache()
+        self.model.training = False
+        self.model.cpu()
+        self.model.student.to(self.device)
+    
+        # prepare before running submission
         self.test_metrics.reset()
         self.test_iou_metrics.reset()
         args = self.config['test']['args']
@@ -325,6 +331,7 @@ class LayerwiseTrainer(BaseTrainer):
         if save_4_sm and not os.path.exists(path_output):
             os.mkdir(path_output)
         n_samples = len(self.valid_data_loader)
+        
         with torch.no_grad():
             for batch_idx, (img_name, data, target) in enumerate(self.valid_data_loader):
                 self.logger.info('{}/{}'.format(batch_idx, n_samples))
